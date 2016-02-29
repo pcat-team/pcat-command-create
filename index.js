@@ -1,5 +1,4 @@
 'use strict'
-const mkdirp = require('mkdirp')
 const path = require('path')
 const fse  = require('fs-extra')
 const fs   = require('fs')
@@ -27,18 +26,24 @@ exports.run = function(argv, cli, env) {
   }
   var command = argv._
   var _name = argv.w || argv.widget
+  var _page = argv.p || argv.page
   var dirs = ['page','widget']
   var files = ['fis-conf.js','map.json','package.json']
 
   if(_name){
-    let dir = path.join(env.cwd,_name)
+    let dir = fis.project.getProjectPath() + '/'
     ;[_name+'.html',_name+'.css',_name+'.js'].forEach(function(name){
-      fse.outputFile(path.join(dir,name),'')
-      fis.log.info(path.join(dir,name).yellow.bold  + ' is created success!')
+      fis.log.info(path.resolve(dir,'./widget/'+_name + '/'+ name).yellow.bold  + ' is created success!')
+    })
+  }else if(_page){
+    let dir = fis.project.getProjectPath() + '/'
+    ;[_name+'.html',_name+'.css',_name+'.js',_name + '_cms.json'].forEach(function(name){
+      fse.outputFile(path.resolve(dir,'./page/'+_name + '/'+ name),'')
+      fis.log.info(path.resolve(dir,'./page/'+_name + '/'+ name).yellow.bold  + ' is created success!')
     })
   }else if(command[1]){
     // mkdirp([])
-    let target = path.join(env.cwd,command[1])
+    let target = path.resolve(fis.project.getProjectPath(),command[1])
     fse.copy(path.resolve(__dirname,'temp'),target, function (err) {
       if (err) return fis.log.error(err)
       fis.log.info(command[1].yellow.bold  + ' is created success!')
@@ -48,5 +53,5 @@ exports.run = function(argv, cli, env) {
       })
     })
   }
-  console.log(command)
+  // console.log(command)
 }
