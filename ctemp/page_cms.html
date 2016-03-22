@@ -1,0 +1,58 @@
+<%@page pageEncoding="GBK" %>
+<%@include file="/templateInclude.jsp" %>
+<%--cms 预览、上传的配置，是一个 Javascript 对象表达式--%>
+<%--cms_config--
+{
+  preview : {
+    userName:'',         // cms用户名(必填)
+
+    previewType:'',      // 预览文章时值为"article",预览栏目时值为"channel",预览其他（如供外接口）时不填
+    articleId:'',        // 预览文章时所需的文章id(文章预览时必须)
+    channelName:'',      // 栏目名(预览栏目时必须)
+
+    multiTplId:'',       // 多模板id，当预览多模板时必须传入(预览多模板时必须)
+    multiArticleType:'', // 专题多模板类型
+
+    paramName:'',        // "outerIntfId",供外接口id;"authorId",作者笔名id;"tagWordId",标签词id
+    paramValue:'',       // 供外接口id、作者笔名id、标签词id
+
+    pageNo:'',           // 页码，预览第几页内容
+    allPage:'',          // 浏览全文，"y"表示浏览全文，默认"n"
+
+    charsetName:'utf-8', // 编码参数(别改动)
+    fromCache:'y'        // 是否拿取缓存的假数据(拿缓存预览快)
+  },
+  upload : {
+    path: '',            // 模板分类(必填)
+    channelId: '',       // 栏目ID(必填)
+    tplType: '1',        // 模板类型(必填 "1"-栏目模板;"2"-文章模板)
+    templateCate: 'main',// 多模板类型  (选填，不填默认为栏目主模板main)
+
+    isZt:'',             // 专题模板类型("1"-文章;"2"-栏目)(专题模板必填)
+    ztName:'',           // 专题模板显示名称(专题模板必填)
+    pictureUrl:'',       // 示意图url(专题模板必填)
+    modelNumber:'',      // 普通板块数量(专题模板必填)
+    regionNumber:'',     // 隐藏板块数量(专题模板必填)
+    ztConfig:'',         // 模块配置(专题模板必填)
+
+    category:'',         // 专题模板分类(电脑网用)
+    commitMessage:''     // 版本日志(选填）
+  }
+}
+--/cms_config--%>
+<%--cms 预览、上传的配置 结束--%>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!--COMBO_CSS-->
+</head>
+
+<body>
+  <!--COMBO_JS-->
+  <!-- @require common:pc-require -->
+</body>
+
+</html>
