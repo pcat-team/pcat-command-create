@@ -3,7 +3,7 @@ const path = require('path')
 const fse  = require('fs-extra')
 const fs   = require('fs')
 const projectPath = fis.project.getProjectPath()
-const siteReg = /\/(pc(?:online|auto|lady|house|baby|games))\//i
+const siteReg = /\/(pc(?:online|auto|lady|house|baby|games))\/*/i
 const site = siteReg.test(projectPath) ? RegExp.$1 : ''
 
 if(!site)return fis.log.info('Can\'t find site dirname'.red.bold);
