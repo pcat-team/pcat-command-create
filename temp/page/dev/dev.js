@@ -1,1 +1,0 @@
- require.config(<!--REQUIRE_CONFIG-->)
