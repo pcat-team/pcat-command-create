@@ -40,11 +40,12 @@ exports.run = function(argv, cli, env) {
 
   if(_name){
     let dir = projectPath + '/'
-    let wDir = path.resolve(dir,'./widget/'+_name)
+    let wDir = path.resolve(dir,'./widget/'+_name + '/0.0.0')
     if(fs.existsSync(wDir))return fis.log.warn(`${_name} is exists\n` ,wDir.red.bold);
     ;[_name+'.html',_name+'.css',_name+'.js'].forEach(function(name){
-      fse.outputFile(path.resolve(dir,'./widget/'+_name + '/'+ name),'')
-      fis.log.info(path.resolve(dir,'./widget/'+_name + '/'+ name).yellow.bold  + ' is created success!')
+    console.log(_name + name)
+      fse.outputFile(path.resolve(dir,'./widget/'+_name + '/0.0.0/'+ name),'')
+      fis.log.info(path.resolve(dir,'./widget/'+_name + '/0.0.0/'+ name).yellow.bold  + ' is created success!')
     })
   }else if(_page){
     let dir = projectPath + '/'
