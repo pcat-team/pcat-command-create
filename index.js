@@ -38,7 +38,7 @@ exports.run = function(argv, cli, env) {
   var _page = argv.p || argv.page
   var _cms  = argv.c || argv.cms
 
-  if(_name){
+  if(_name){ // 组件
     let dir = projectPath + '/'
     let wDir = path.resolve(dir,'./widget/'+_name + '/0.0.0')
     if(fs.existsSync(wDir))return fis.log.warn(`${_name} is exists\n` ,wDir.red.bold);
@@ -47,7 +47,7 @@ exports.run = function(argv, cli, env) {
       fse.outputFile(path.resolve(dir,'./widget/'+_name + '/0.0.0/'+ name),'')
       fis.log.info(path.resolve(dir,'./widget/'+_name + '/0.0.0/'+ name).yellow.bold  + ' is created success!')
     })
-  }else if(_page){
+  }else if(_page){ // page
     let dir = projectPath + '/'
     let pDir = path.resolve(dir,'./page/'+_page)
     if(fs.existsSync(pDir))return fis.log.warn(`${_page} is exists\n` ,wDir.red.bold);
@@ -62,7 +62,7 @@ exports.run = function(argv, cli, env) {
         fis.log.info(path.resolve(dir,target).yellow.bold + ' is created success!')
       })
     })
-  }else if(_cms){
+  }else if(_cms){ // cms 类型
     let dir = projectPath + '/'
     let pDir = path.resolve(dir,'./page/'+_cms)
     if(fs.existsSync(pDir))return fis.log.warn(`${_cms} is exists\n` ,wDir.red.bold);
@@ -75,7 +75,7 @@ exports.run = function(argv, cli, env) {
         fis.log.info(path.resolve(dir,target).yellow.bold + ' is created success!')
       })
     })
-  }else if(command[1]){
+  }else if(command[1]){ // 子系统
     // mkdirp([])
     let _name = command[1]
     let target = path.resolve(projectPath,_name)
