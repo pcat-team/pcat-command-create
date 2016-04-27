@@ -7,6 +7,9 @@ fis.pcat({
   domain : {
       dev: ''
   },
+  api:{
+    cmsUpLoad:"dev6.pconline.com.cn:8002"
+  },
   packageJson:packageJson
 })
 
