@@ -1,0 +1,48 @@
+<!--<%@page pageEncoding="GBK" %><%@include file="/templateInclude.jsp" %>
+    <%--cms_config--
+    {preview : {userName:'moyingchao',previewType:'channel',channelName:'软件专题', charsetName:'utf-8',fromCache:'n'}
+    }
+    --/cms_config--%>-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组件预览</title>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.5/css/bootstrap-theme.min.css">
+    <!--COMBO_CSS-->
+</head>
+
+<body data-spy="scroll" data-target="#PCAT_WidgetNavBar">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-2">
+
+                <div data-spy="affix" id="PCAT_WidgetNavBar" class="sideBar panel panel-primary">
+                    
+                 </div>
+
+            </div>
+            <div class="col-md-10">
+                <div id="PCAT_WidgetList"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+    const PCAT_WIDGET_LIST = __WIDGETALLLISTS__;
+
+    const  LOADLIST = __WIDGETLOADEDLISTS__;
+    </script>
+    <script src="./lib/react.js"></script>
+    <script src="./lib/react-dom.js"></script>
+    <script src="./render.jsx"></script>
+    <script type="text/javascript" src="./lib/bootstrap-3.3.5/js/jquery.js"></script>
+    <script type="text/javascript" src="./lib/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+    <!-- @require common:pc-require -->
+    <!--COMBO_JS-->
+</body>
+
+</html>
