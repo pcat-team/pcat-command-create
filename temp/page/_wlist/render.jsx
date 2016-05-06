@@ -53,7 +53,7 @@ var Tbody = React.createClass({
         var isloaded = LOADLIST && LOADLIST[name] && LOADLIST[name][version];
 
          return (
-            <tr className={isloaded ? "success":"disabled"}>
+            <tr className={isloaded ? "success":"warning"}>
               <td>{version}</td>
               <td>{item.des}</td>
               <td>{item.author}</td>

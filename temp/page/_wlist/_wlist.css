@@ -1,5 +1,5 @@
 /**
- * @require reset
+ * @require common:reset
  */
 body{ position: relative; }
 table th,table td{ vertical-align: middle !important; }
