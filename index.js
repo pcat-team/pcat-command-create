@@ -16,7 +16,7 @@ var tempFn = function(fn) {
 }
 var packContent = {
     "name": "{{temp}}",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "dir": dir,
     "site": site
 }
