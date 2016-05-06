@@ -1,6 +1,6 @@
 {
   "name": "pcat-command-create",
-  "version": "1.1.18",
+  "version": "1.1.19",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "author": "JinC",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "*"
+    "fs-extra": "*",
+    "read":"1.0.7"
   }
 }
