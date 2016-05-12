@@ -4,23 +4,29 @@ const fse = require('fs-extra')
 const fs = require('fs')
 const read = require("read");
 const projectPath = fis.project.getProjectPath()
-const siteReg = /\/(pc(?:online|auto|lady|house|baby|games))\/*/i
-const site = siteReg.test(projectPath) ? RegExp.$1 : ''
+const siteReg = /\/(pc(?:online|auto|lady|house|baby|games))\/((pc)|(wap))\//i
+// 网站
+const site = siteReg.test(projectPath+"/") ? RegExp.$1 : ''
+// 客户端 pc or wap
+const client = siteReg.test(projectPath+"/") ? RegExp.$2 : ''
 
-if (!site) return fis.log.info('Can\'t find site dirname'.red.bold);
-var __path = projectPath.split(`/${site}`)
-const dir = __path[1]||"/"
+var __path = projectPath.split(`/${site}/${client}/`)
+const dir = __path[1]||""
 
 var tempFn = function(fn) {
     return fn.toString().replace(/.*?\/\*(.*?)\*\//gmi, '$1')
 }
 
+
+
 var packContent = {
     "name": "{{temp}}",
     "version": "1.0.0",
+    "client":client,
     "dir": dir,
     "site": site
 }
+
 
 exports.name = 'create <command> [options]'
     // exports.usage = '<commad> [option]'
@@ -40,6 +46,12 @@ exports.run = function(argv, cli, env) {
     var _page = argv.p || argv.page
     var _cms = argv.c || argv.cms
 
+
+    if (!site) {
+        fis.log.info("请在各网指定的目录下新建子系统！");
+
+        return;
+    } 
 
     if (_name) { // 组件
         read({ prompt: "组件名: " }, function(er, widgetName) {
@@ -142,6 +154,7 @@ exports.run = function(argv, cli, env) {
         let _name = command[1]
         let target = path.resolve(projectPath, _name)
         if (fs.existsSync(target)) return fis.log.warn(`${_name} is exists\n`, target.red.bold);
+
         fse.copy(path.resolve(__dirname, 'temp'), target, function(err) {
             if (err) return fis.log.error(err)
             fis.log.info(_name.yellow.bold + ' is created success!')
