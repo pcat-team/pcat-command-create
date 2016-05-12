@@ -8,12 +8,13 @@ const siteReg = /\/(pc(?:online|auto|lady|house|baby|games))\/*/i
 const site = siteReg.test(projectPath) ? RegExp.$1 : ''
 
 if (!site) return fis.log.info('Can\'t find site dirname'.red.bold);
-var __path = projectPath.split(`/${site}/`)
-const dir = __path[1]
+var __path = projectPath.split(`/${site}`)
+const dir = __path[1]||"/"
 
 var tempFn = function(fn) {
     return fn.toString().replace(/.*?\/\*(.*?)\*\//gmi, '$1')
 }
+
 var packContent = {
     "name": "{{temp}}",
     "version": "1.0.0",
@@ -145,6 +146,7 @@ exports.run = function(argv, cli, env) {
             if (err) return fis.log.error(err)
             fis.log.info(_name.yellow.bold + ' is created success!')
             packContent.name = _name
+            console.log(path.resolve(target, 'package.json'))
             fse.outputJson(path.resolve(target, 'package.json'), packContent, function(err) {
                 if (err) return fis.log.error(path.resolve(target, 'package.json').red.bold)
             })
