@@ -5,26 +5,16 @@ const fs = require('fs')
 const read = require("read");
 const projectPath = fis.project.getProjectPath()
 const siteReg = /\/(pc(?:online|auto|lady|house|baby|games))\/((pc)|(wap))\//i
-// 网站
-const site = siteReg.test(projectPath+"/") ? RegExp.$1 : ''
-// 客户端 pc or wap
-const client = siteReg.test(projectPath+"/") ? RegExp.$2 : ''
+    // 网站
+const site = siteReg.test(projectPath + "/") ? RegExp.$1 : ''
+    // 客户端 pc or wap
+const client = siteReg.test(projectPath + "/") ? RegExp.$2 : ''
 
 var __path = projectPath.split(`/${site}/${client}/`)
-const dir = __path[1]||""
+const dir = __path[1] || ""
 
 var tempFn = function(fn) {
     return fn.toString().replace(/.*?\/\*(.*?)\*\//gmi, '$1')
-}
-
-
-
-var packContent = {
-    "name": "{{temp}}",
-    "version": "1.0.0",
-    "client":client,
-    "dir": dir,
-    "site": site
 }
 
 
@@ -46,14 +36,39 @@ exports.run = function(argv, cli, env) {
     var _page = argv.p || argv.page
     var _cms = argv.c || argv.cms
 
+    // 是否为子系统更目录
+    var isRoot = fis.util.exists(projectPath + "/fis-conf.js");
 
-    if (!site) {
-        fis.log.info("请在各网指定的目录下新建子系统！");
+    if (command[1]) {
 
-        return;
-    } 
+        if (!site) {
+            fis.log.info("请在各网指定目录下创建子系统！".red.bold);
+            return;
+        }
+
+          if (isRoot) {
+            fis.log.info("请不要在子系统下创建子系统！".red.bold);
+            return;
+        }
+
+
+    } else {
+
+        if (!site) {
+            fis.log.info("请在各网指定目录下创建！".red.bold);
+            return;
+        }
+
+          if (!isRoot) {
+            fis.log.info("请在子系统根目录下创建！".red.bold);
+            return;
+        }
+
+    }
+
 
     if (_name) { // 组件
+
         read({ prompt: "组件名: " }, function(er, widgetName) {
             if (!widgetName) {
                 console.error("请输入组件名！")
@@ -62,7 +77,7 @@ exports.run = function(argv, cli, env) {
                     if (!version) {
                         console.error("请输入版本号！")
                     } else {
-                        read({ prompt: "描述关键字: " }, function(er,des) {
+                        read({ prompt: "描述关键字: " }, function(er, des) {
                             if (!des) {
                                 console.error("请输入描述关键字！")
                             } else {
@@ -71,45 +86,47 @@ exports.run = function(argv, cli, env) {
                                         console.error("请输入开发者！")
                                     } else {
 
-                                         let wDir = path.resolve(projectPath,"widget",widgetName,version);
+                                        let wDir = path.resolve(projectPath, "widget", widgetName, version);
 
-                                          // 已存在则不能创建
-                                          if(fs.existsSync(wDir))return fis.log.warn(`${widgetName} is exists\n` ,wDir.red.bold);
+                                        // 已存在则不能创建
+                                        if (fs.existsSync(wDir)) return fis.log.warn(`${widgetName} is exists\n`, wDir.red.bold);
 
-                                          // 创建同名html,js,css以及package.json
-                                          var packageContent = {
-                                            name:widgetName,
-                                            version:version,
-                                            author:author,
-                                            des:des
-                                          }
-                                          
-                                          var oFiles = {
-                                            package:{
-                                              name:"package.json",
-                                              content:JSON.stringify(packageContent,function(key,value){return value},10)
+                                        // 创建同名html,js,css以及package.json
+                                        var packageContent = {
+                                            name: widgetName,
+                                            version: version,
+                                            author: author,
+                                            des: des
+                                        }
+
+                                        var oFiles = {
+                                            package: {
+                                                name: "package.json",
+                                                content: JSON.stringify(packageContent, function(key, value) {
+                                                    return value
+                                                }, 10)
+                                            },
+                                            html: {
+                                                name: widgetName + ".html",
+                                                content: ""
+                                            },
+                                            js: {
+                                                name: widgetName + ".js",
+                                                content: ""
+                                            },
+                                            css: {
+                                                name: widgetName + ".css",
+                                                content: ""
                                             }
-                                            ,html:{
-                                              name:widgetName+".html",
-                                              content:""
-                                            }
-                                            ,js:{
-                                              name:widgetName+".js",
-                                              content:""
-                                            }
-                                            ,css:{
-                                              name:widgetName+".css",
-                                              content:""
-                                            }
-                                          }
-                                          ;Object.keys(oFiles).forEach(function(file){
+                                        };
+                                        Object.keys(oFiles).forEach(function(file) {
                                             var name = oFiles[file].name;
                                             console.log(name)
-                                            fse.outputFile(path.resolve(wDir,name),oFiles[file].content)
-                                            fis.log.info(path.resolve(wDir,name).yellow.bold  + ' is created success!')
-                                          })
+                                            fse.outputFile(path.resolve(wDir, name), oFiles[file].content)
+                                            fis.log.info(path.resolve(wDir, name).yellow.bold + ' is created success!')
+                                        })
 
-                                          
+
                                     }
                                 })
                             }
@@ -150,6 +167,16 @@ exports.run = function(argv, cli, env) {
             })
         })
     } else if (command[1]) { // 子系统
+
+        var packContent = {
+            "name": "{{temp}}",
+            "version": "1.0.0",
+            "client": client,
+            "dir": dir,
+            "site": site
+        }
+
+
         // mkdirp([])
         let _name = command[1]
         let target = path.resolve(projectPath, _name)
