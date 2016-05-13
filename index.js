@@ -173,7 +173,10 @@ exports.run = function(argv, cli, env) {
             "version": "1.0.0",
             "client": client,
             "dir": dir,
-            "site": site
+            "site": site,
+            "dependencies":{
+                
+            }
         }
 
 
