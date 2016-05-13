@@ -37,7 +37,7 @@ exports.run = function(argv, cli, env) {
     var _cms = argv.c || argv.cms
 
     // 是否为子系统更目录
-    var isRoot = fis.util.exists(projectPath + "/fis-conf.js");
+    var isRoot = fis.util.exists(process.cwd() + "/fis-conf.js");
 
     if (command[1]) {
 
