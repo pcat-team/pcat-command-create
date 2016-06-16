@@ -1,0 +1,13 @@
+/**
+ * @require common:reset
+ */
+/*以下样式用于专题背景很复杂的情况，去除底部的背景，使底部风格和页面统一，注意要将此移到外链文件中*/
+
+/* footer */
+/*  
+body .g-footer .gft-links,
+body .g-footer .gft-links a{ color:#000;}
+
+body .g-footer .gft-copyRight,
+body .g-footer .gft-copyRight a{ color:#000;} 
+*/ 
