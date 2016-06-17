@@ -210,10 +210,7 @@ exports.run = function(argv, cli, env) {
                         }
                     })
 
-                } else {
-                    fis.log.info("只能创建js或css模块！".red.bold);
-                    return;
-                }
+                } 
 
 
             });
