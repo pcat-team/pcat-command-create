@@ -23,8 +23,8 @@ exports.name = 'create <command> [options]'
 exports.desc = 'create dir , widget or page for deferant works'
 exports.options = {
     '-s,--system <系统名> ': '创建子系统',
-    '-m,--module <模块名> ': '创建js和css模块',
-    '-w,--widget <组件名> ': '创建组件',
+    '-m,--module': '创建js和css模块',
+    '-w,--widget': '创建组件',
     '-p,--page <页面名> ': '创建普通页面模板',
     '-c,--pcms <页面名>': '创建cms页面模板',
     '-z,--pzt <页面名>': '创建专题页面模板'
@@ -315,7 +315,7 @@ exports.run = function(argv, cli, env) {
         }
 
         // 创建页面
-        if (_page || _cms || _pzt) {
+        else if (_page || _cms || _pzt) {
 
             let page = _page || _cms || _pzt;
 
@@ -363,7 +363,9 @@ exports.run = function(argv, cli, env) {
 
 
 
-        } 
+        } else{
+            return cli.help(exports.name, exports.options);
+        }
 
 
     }
