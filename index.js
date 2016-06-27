@@ -20,7 +20,7 @@ var tempFn = function(fn) {
 
 exports.name = 'create <command> [options]'
     // exports.usage = '<commad> [option]'
-exports.desc = '项目脚手架，快速创建子系统、模块、组件、页面等'
+exports.desc = '项目脚手架，快速创建系统、模块、组件、页面等'
 exports.options = {
     '-s,--system <系统名> ': '创建子系统',
     '-m,--module': '创建js和css模块',
