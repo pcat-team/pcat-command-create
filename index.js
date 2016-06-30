@@ -130,7 +130,7 @@ exports.run = function(argv, cli, env) {
         if (_module) {
 
 
-            read({ prompt: "模块类型(js or css): " }, function(er, type) {
+            read({ prompt: "模块文件(js or css or all): " }, function(er, type) {
 
                 if (er) {
                     console.log('');
@@ -140,7 +140,7 @@ exports.run = function(argv, cli, env) {
                 // 只能创建js或css模块
                 type = type.toLowerCase();
 
-                if (type == "js" || type == "css") {
+                if (type == "js" || type == "css" || type == "all") {
 
 
                     read({ prompt: "模块名: " }, function(er, moduleName) {
@@ -151,7 +151,13 @@ exports.run = function(argv, cli, env) {
                         if (!moduleName) {
                             console.error("请输入模块名！")
                         } else {
-                            moduleName = type.substr(0, 1) + "-" + moduleName;
+
+                            // 如果是纯js或css模块，模块名前加上 “j” 或 “c”前缀
+                            if (type != "all") {
+                                moduleName = type.substr(0, 1) + "-" + moduleName;
+                            }
+
+
                             read({ prompt: "描述关键字: " }, function(er, des) {
                                 if (er) {
                                     console.log('');
@@ -179,22 +185,48 @@ exports.run = function(argv, cli, env) {
                                                 name: moduleName,
                                                 version: "1.0.0",
                                                 author: author,
-                                                main: moduleName + "." + type,
+                                                main: moduleName + "." + type=="all" ? "js":type,
                                                 des: des
                                             }
 
+                                            // 需要创建的文件列表
                                             var oFiles = {
                                                 package: {
                                                     name: "package.json",
                                                     content: JSON.stringify(packageContent, function(key, value) {
                                                         return value
                                                     }, 10)
-                                                },
-                                                main: {
+                                                }
+                                            };
+
+                                            // 有模板、样式、交互功能的模块
+                                            if(type=="all"){
+                                                oFiles.file1 = {
+                                                    name: moduleName + ".js",
+                                                    content: ""
+                                                }
+
+                                                oFiles.file2 = {
+                                                    name: moduleName + ".css",
+                                                    content: ""
+                                                }
+
+                                                oFiles.tpl = {
+                                                    name: moduleName + ".tpl",
+                                                    content: ""
+                                                }
+
+
+                                        // 纯js或css模块
+                                            }else{
+
+                                                oFiles.file1= {
                                                     name: moduleName + "." + type,
                                                     content: ""
                                                 }
-                                            };
+                                            }
+
+
                                             Object.keys(oFiles).forEach(function(file) {
                                                 var name = oFiles[file].name;
                                                 console.log(name)
@@ -211,7 +243,7 @@ exports.run = function(argv, cli, env) {
                     })
 
                 } else {
-                    fis.log.info("只能创建js或css模块！".red.bold);
+                    fis.log.info("请指定需要创建的模块文件类型！".red.bold);
                     return;
                 }
 
@@ -332,18 +364,18 @@ exports.run = function(argv, cli, env) {
             }
 
             // cms页面
-             if (_cms) {
+            if (_cms) {
 
-                tplFiles.html =  "ctemp/tpl.html";
+                tplFiles.html = "ctemp/tpl.html";
 
             }
 
             // 专题页面
-             if (_pzt) {
+            if (_pzt) {
 
-                tplFiles.html =  `ztemp/${site}/tpl.html`;
-                tplFiles.js =  `ztemp/${site}/tpl.js`;
-                tplFiles.css =  `ztemp/${site}/tpl.css`;
+                tplFiles.html = `ztemp/${site}/tpl.html`;
+                tplFiles.js = `ztemp/${site}/tpl.js`;
+                tplFiles.css = `ztemp/${site}/tpl.css`;
 
             }
 
@@ -353,17 +385,17 @@ exports.run = function(argv, cli, env) {
                 let read = `${tplFiles[name]}`
 
                 fse.readFile(path.resolve(__dirname, read), function(err, data) {
-                    if(err){
-                         return fis.log.info(err);
+                    if (err) {
+                        return fis.log.info(err);
                     }
                     fse.outputFile(path.resolve(dir, target), data)
-                    fis.log.info( `${page}.${name} 创建成功！\n`.green.bold, path.resolve(dir, target))
+                    fis.log.info(`${page}.${name} 创建成功！\n`.green.bold, path.resolve(dir, target))
                 })
             })
 
 
 
-        } else{
+        } else {
             return cli.help(exports.name, exports.options);
         }
 
