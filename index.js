@@ -130,7 +130,7 @@ exports.run = function(argv, cli, env) {
         if (_module) {
 
 
-            read({ prompt: "模块文件(js or css or all): " }, function(er, type) {
+            read({ prompt: "模块类型(js or css or ui): " }, function(er, type) {
 
                 if (er) {
                     console.log('');
@@ -140,7 +140,7 @@ exports.run = function(argv, cli, env) {
                 // 只能创建js或css模块
                 type = type.toLowerCase();
 
-                if (type == "js" || type == "css" || type == "all") {
+                if (type == "js" || type == "css" || type == "ui") {
 
 
                     read({ prompt: "模块名: " }, function(er, moduleName) {
@@ -153,7 +153,7 @@ exports.run = function(argv, cli, env) {
                         } else {
 
                             // 如果是纯js或css模块，模块名前加上 “j” 或 “c”前缀
-                            if (type != "all") {
+                            if (type != "ui") {
                                 moduleName = type.substr(0, 1) + "-" + moduleName;
                             }
 
@@ -185,7 +185,7 @@ exports.run = function(argv, cli, env) {
                                                 name: moduleName,
                                                 version: "1.0.0",
                                                 author: author,
-                                                main: moduleName + "." + type=="all" ? "js":type,
+                                                main: moduleName + "." + type=="ui" ? "js":type,
                                                 des: des
                                             }
 
@@ -200,7 +200,7 @@ exports.run = function(argv, cli, env) {
                                             };
 
                                             // 有模板、样式、交互功能的模块
-                                            if(type=="all"){
+                                            if(type=="ui"){
                                                 oFiles.file1 = {
                                                     name: moduleName + ".js",
                                                     content: ""
