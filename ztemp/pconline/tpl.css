@@ -1,5 +1,5 @@
 /**
- * @require common:reset;
+ * @require common:reset.css;
  */
 /*以下样式用于专题背景很复杂的情况，去除底部的背景，使底部风格和页面统一，注意要将此移到外链index.css中*/
 
