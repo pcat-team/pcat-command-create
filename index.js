@@ -70,12 +70,25 @@ exports.run = function(argv, cli, env) {
 
     }
 
-
+    // 是否包含中文
+    function isChina(s) {
+        var patrn = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi;
+        if (!patrn.exec(s)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 
     if (_system) {
 
         if (check(_system)) return;
+
+        if (isChina(_system)) {
+            fis.log.warn("不能包含中文！".red.bold);
+            return;
+        }
 
         if (!site) {
             fis.log.warn("请在各网指定目录下创建子系统！".red.bold);
@@ -128,6 +141,11 @@ exports.run = function(argv, cli, env) {
 
         // 创建模块
         if (_module) {
+
+            if (isChina(_module)) {
+                fis.log.warn("不能包含中文！".red.bold);
+                return;
+            }
 
 
             read({ prompt: "模块类型(js or css or ui): " }, function(er, type) {
@@ -185,7 +203,7 @@ exports.run = function(argv, cli, env) {
                                                 name: moduleName,
                                                 version: "1.0.0",
                                                 author: author,
-                                                main: moduleName + "." + type=="ui" ? "js":type,
+                                                main: moduleName + "." + type == "ui" ? "js" : type,
                                                 des: des
                                             }
 
@@ -200,7 +218,7 @@ exports.run = function(argv, cli, env) {
                                             };
 
                                             // 有模板、样式、交互功能的模块
-                                            if(type=="ui"){
+                                            if (type == "ui") {
                                                 oFiles.file1 = {
                                                     name: moduleName + ".js",
                                                     content: ""
@@ -217,10 +235,10 @@ exports.run = function(argv, cli, env) {
                                                 }
 
 
-                                        // 纯js或css模块
-                                            }else{
+                                                // 纯js或css模块
+                                            } else {
 
-                                                oFiles.file1= {
+                                                oFiles.file1 = {
                                                     name: moduleName + "." + type,
                                                     content: ""
                                                 }
@@ -257,6 +275,11 @@ exports.run = function(argv, cli, env) {
 
         // 创建组件
         else if (_widget) {
+
+            if (isChina(_module)) {
+                fis.log.warn("不能包含中文！".red.bold);
+                return;
+            }
 
             read({ prompt: "组件名: " }, function(er, widgetName) {
                 if (er) {
