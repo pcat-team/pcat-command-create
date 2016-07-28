@@ -83,10 +83,11 @@ exports.run = function(argv, cli, env) {
 
     if (_system) {
 
+
         if (check(_system)) return;
 
         if (isChina(_system)) {
-            fis.log.warn("不能包含中文！".red.bold);
+            fis.log.warn("子系统不能包含中文！".red.bold);
             return;
         }
 
@@ -142,11 +143,6 @@ exports.run = function(argv, cli, env) {
         // 创建模块
         if (_module) {
 
-            if (isChina(_module)) {
-                fis.log.warn("不能包含中文！".red.bold);
-                return;
-            }
-
 
             read({ prompt: "模块类型(js or css or ui): " }, function(er, type) {
 
@@ -161,7 +157,7 @@ exports.run = function(argv, cli, env) {
                 if (type == "js" || type == "css" || type == "ui") {
 
 
-                    read({ prompt: "模块名: " }, function(er, moduleName) {
+                    read({ prompt: "模块名（非中文）: " }, function(er, moduleName) {
                         if (er) {
                             console.log('');
                             return;
@@ -170,10 +166,14 @@ exports.run = function(argv, cli, env) {
                             console.error("请输入模块名！")
                         } else {
 
-                            // 如果是纯js或css模块，模块名前加上 “j” 或 “c”前缀
-                            if (type != "ui") {
-                                moduleName = type.substr(0, 1) + "-" + moduleName;
+                            if (isChina(moduleName)) {
+                                fis.log.warn("模块名不能包含中文！".red.bold);
+                                return;
                             }
+
+                            // 如果是纯js或css模块，模块名前加上 “j” 或 “c”前缀
+
+                            moduleName = type.substr(0, 1) + "-" + moduleName;
 
 
                             read({ prompt: "描述关键字: " }, function(er, des) {
@@ -276,12 +276,7 @@ exports.run = function(argv, cli, env) {
         // 创建组件
         else if (_widget) {
 
-            if (isChina(_module)) {
-                fis.log.warn("不能包含中文！".red.bold);
-                return;
-            }
-
-            read({ prompt: "组件名: " }, function(er, widgetName) {
+            read({ prompt: "组件名（非中文）: " }, function(er, widgetName) {
                 if (er) {
                     console.log('');
                     return;
@@ -291,6 +286,12 @@ exports.run = function(argv, cli, env) {
                 if (!widgetName) {
                     console.error("请输入组件名！")
                 } else {
+
+                    if (isChina(widgetName)) {
+                        fis.log.warn("组件名不能包含中文！".red.bold);
+                        return;
+                    }
+
                     read({ prompt: "版本号: ", default: "1.0.0" }, function(er, version) {
                         if (er) {
                             console.log('');
@@ -375,6 +376,11 @@ exports.run = function(argv, cli, env) {
             let page = _page || _cms || _pzt;
 
             if (check(page)) return;
+
+            if (isChina(page)) {
+                        fis.log.warn("页面名字不能包含中文！".red.bold);
+                        return;
+                    }
 
             let dir = projectPath + '/'
             let pDir = path.resolve(dir, './page/' + page)
