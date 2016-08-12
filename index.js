@@ -203,7 +203,7 @@ exports.run = function(argv, cli, env) {
                                                 name: moduleName,
                                                 version: "1.0.0",
                                                 author: author,
-                                                main: moduleName + "." + type == "ui" ? "js" : type,
+                                                main: moduleName + "." + (type == "ui" ? "js" : type),
                                                 des: des
                                             }
 
