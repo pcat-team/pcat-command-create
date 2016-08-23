@@ -18,12 +18,11 @@
 window._common_counter_code_ = "channel=3936";
 window._common_counter_uuid_ = "";
 window._common_counter_from_ = "cms";
-document.write("<img style=display:none src=http://count5.pconline.com.cn/newcount/count.php?"+_common_counter_uuid_+_common_counter_code_+"&screen="+screen.width+"*"+screen.height+"&refer="+encodeURIComponent(document.referrer)+"&anticache="+new Date().getTime()+"&url="+encodeURIComponent(location.href)+"&from="+(window._common_counter_from_?window._common_counter_from_:"")+"&iframeCode="+(self===top?0:(top===parent?1:2))+" >");
+<!--#include virtual="/global_ssi/pconline/utf8/count/index.html" -->
 </script>
 
 <!-- 头部 -->
-<script src="http://www.pconline.com.cn/global/zt_header/index.html" charset="gbk"></script>
-
+<!--#include virtual="/global_ssi/pconline/utf8/zt_navibar/index.html" -->
 <div class="doc">
 	<!-- header -->
 	<div class="header">
@@ -43,7 +42,7 @@ document.write("<img style=display:none src=http://count5.pconline.com.cn/newcou
     </script>
   <!--COMBO_JS-->
 <!-- /页面脚本区 -->
-<script src="http://www.pconline.com.cn/global/footer/index.html" charset="gbk"></script>
+<!--#include virtual="/global_ssi/pconline/utf8/footer/index.html" -->
 <script>_submitIvyID();</script>
 </body>
 </html>
