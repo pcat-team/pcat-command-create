@@ -4,7 +4,7 @@ const fse = require('fs-extra')
 const fs = require('fs')
 const read = require("read");
 const projectPath = fis.project.getProjectPath()
-const siteReg = /\/(geekev||pc(?:online|auto|lady|house|baby|games))\/((pc)|(wap))\//i
+const siteReg = /\/(geeknev||pc(?:online|auto|lady|house|baby|games))\/((pc)|(wap))\//i
     // 网站
 const site = siteReg.test(projectPath + "/") ? RegExp.$1 : ''
     // 客户端 pc or wap
