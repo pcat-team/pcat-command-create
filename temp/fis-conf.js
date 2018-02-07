@@ -21,6 +21,35 @@ fis.pcat({
     },
     // es6、es7 或者 jsx 编译成 es5
     // 默认开启了 preset-2015 preset-stage-3 preset-react
-    // 具体的 babel 配置参数可以参考 https://developit.github.io/babel-legacy-docs/
-    babelConfig: {}
+    // https://github.com/fex-team/fis-parser-babel-6.x
+    babelConfig: {},
+
+    // typescript 编译成js
+    // https://github.com/fex-team/fis3-parser-typescript
+    typescriptConfig: {
+        // 解析 <xml> 为对应的 react 语句。如果设置 1, 则保留
+        jsx: 2,
+        // 如果要提示所有提示信息，请开启
+        showNotices: false,
+        // 1: commonjs
+        // 2: amd
+        // 3: umd
+        // 4: system
+        module: 1,
+        // 0: es3
+        // 1: es5
+        // 2: es6
+        target: 0,
+        // 配置是否输出 sourcemap
+        sourceMap: false
+    },
+    // 压缩 js 代码。
+    // https://github.com/fex-team/fis-optimizer-uglify-js
+    uglifyJsConfig: {
+
+    },
+
+    // 压缩 css 代码 配置
+    //https://github.com/fex-team/fis-optimizer-clean-css
+    cleanCssConfig: {},
 })
