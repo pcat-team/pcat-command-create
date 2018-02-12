@@ -5,9 +5,9 @@ const fs = require('fs')
 const read = require("read");
 const projectPath = fis.project.getProjectPath()
 const siteReg = /\/(geeknev||pc(?:online|auto|lady|house|baby|games))\/((pc)|(wap))\//i
-    // 网站
+// 网站
 const site = siteReg.test(projectPath + "/") ? RegExp.$1 : ''
-    // 客户端 pc or wap
+// 客户端 pc or wap
 const client = siteReg.test(projectPath + "/") ? RegExp.$2 : ''
 
 var __path = projectPath.split(`/${site}/${client}/`)
@@ -19,15 +19,17 @@ var tempFn = function(fn) {
 
 
 exports.name = 'create <command> [options]'
-    // exports.usage = '<commad> [option]'
+// exports.usage = '<commad> [option]'
 exports.desc = '项目脚手架，快速创建系统、模块、组件、页面等'
 exports.options = {
     '-s,--system <系统名> ': '创建子系统',
     '-m,--module': '创建js和css模块',
     '-w,--widget': '创建组件',
-    '-p,--page <页面名> ': '创建普通页面模板',
+    '-p,--page <页面名>': '创建普通页面模板',
     '-c,--pcms <页面名>': '创建cms页面模板',
-    '-z,--pzt <页面名>': '创建专题页面模板'
+    '-z,--pzt <页面名>': '创建专题页面模板',
+    '--copy <复制>': '暂时只支持复制页面'
+
 };
 exports.run = function(argv, cli, env) {
     'use strict'
@@ -50,6 +52,9 @@ exports.run = function(argv, cli, env) {
     var _cms = argv.c || argv.pcms;
     // 专题
     var _pzt = argv.z || argv.pzt;
+
+    // 复制
+    var copy = argv.copy;
 
     // 是否为子系统更目录
     var isRoot = fis.util.exists(process.cwd() + "/fis-conf.js");
@@ -373,24 +378,30 @@ exports.run = function(argv, cli, env) {
         // 创建页面
         else if (_page || _cms || _pzt) {
 
+
+
             let page = _page || _cms || _pzt;
 
             if (check(page)) return;
 
             if (isChina(page)) {
-                        fis.log.warn("页面名字不能包含中文！".red.bold);
-                        return;
-                    }
+                fis.log.warn("页面名字不能包含中文！".red.bold);
+                return;
+            }
 
             let dir = projectPath + '/'
             let pDir = path.resolve(dir, './page/' + page)
             if (fs.existsSync(pDir)) return fis.log.warn(`页面:${page} 已经存在\n`.red.bold, pDir);
+
+            let targetPath = __dirname;
 
             var tplFiles = {
                 html: "temp/page/dev/dev.html",
                 js: "temp/page/dev/dev.js",
                 css: "temp/page/dev/dev.css"
             }
+
+
 
             // cms页面
             if (_cms) {
@@ -408,17 +419,44 @@ exports.run = function(argv, cli, env) {
 
             }
 
+            if (copy) {
+
+                targetPath = dir;
+
+                if (!fs.existsSync(`${targetPath}page/${copy}`)) {
+
+                    fis.log.warn(`复制的页面[${targetPath}page/${copy}]不存在`.yellow.bold);
+                    return;
+                }
+
+                tplFiles.html = `page/${copy}/${copy}.html`;
+                tplFiles.js = `page/${copy}/${copy}.js`;
+                tplFiles.css = `page/${copy}/${copy}.css`;
+            }
+
+
+
+
 
             Object.keys(tplFiles).forEach(function(name) {
-                let target = `./page/${page}/${page+"."+name}`
-                let read = `${tplFiles[name]}`
 
-                fse.readFile(path.resolve(__dirname, read), function(err, data) {
+                let to = `./page/${page}/${page+"."+name}`;
+                let read = `${tplFiles[name]}`;
+
+
+
+
+                let targetFile = path.resolve(targetPath, read);
+
+                if(!fs.existsSync(targetFile)) return;
+
+                fse.readFile(targetFile, function(err, data) {
                     if (err) {
                         return fis.log.info(err);
                     }
-                    fse.outputFile(path.resolve(dir, target), data)
-                    fis.log.info(`${page}.${name} 创建成功！\n`.green.bold, path.resolve(dir, target))
+
+                    fse.outputFile(path.resolve(dir, to), data)
+                    fis.log.info(`${page}.${name} 创建成功！\n`.green.bold, path.resolve(dir, to))
                 })
             })
 
