@@ -20,9 +20,29 @@ fis.pcat({
         "cascade": true
     },
     // es6、es7 或者 jsx 编译成 es5
-    // 默认开启了 preset-2015 preset-stage-3 preset-react
+    // 默认开启了 preset-env preset-stage-3 preset-react
     // https://github.com/fex-team/fis-parser-babel-6.x
-    babelConfig: {},
+    babelConfig: {
+
+        // preset config
+        presetConfig: {
+            env: {
+                loose: true
+            },
+            // stage3:{
+
+            // },
+            // react:{
+
+            // }
+
+        },
+        // babel-core conifg
+        config: {
+
+        }
+    },
+
 
     // typescript 编译成js
     // https://github.com/fex-team/fis3-parser-typescript
