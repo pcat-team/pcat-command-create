@@ -1,10 +1,10 @@
-#pcat-command-create
+# pcat-command-create
 
 用于创建子系统、page文件夹、组件文件夹
 
 ## 创建一个子系统
 ```bash
-$ pcat create project
+$ pcat create -s
 ```
 
 ## 创建一个page文件夹

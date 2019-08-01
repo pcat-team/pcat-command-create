@@ -22,7 +22,7 @@ exports.name = 'create <command> [options]'
 // exports.usage = '<commad> [option]'
 exports.desc = '项目脚手架，快速创建系统、模块、组件、页面等'
 exports.options = {
-    '-s,--system <系统名> ': '创建子系统',
+    '-s,--system ': '创建子系统',
     '-m,--module': '创建js和css模块',
     '-w,--widget': '创建组件',
     '-p,--page <页面名>': '创建普通页面模板',
@@ -98,7 +98,7 @@ exports.run = function (argv, cli, env) {
             return;
         }
 
-        read({ prompt: "网站名（非中文）：", default: "pcauto", edit: true }, function (er, site) {
+        read({ prompt: "网站名（非中文）：", default: "pcauto"}, function (er, site) {
             if (er) {
                 console.log('');
                 return;

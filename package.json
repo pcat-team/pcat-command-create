@@ -1,6 +1,6 @@
 {
-  "name": "pcat-command-create",
-  "version": "3.0.0",
+  "name": "@pc/pcat-command-create",
+  "version": "3.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
