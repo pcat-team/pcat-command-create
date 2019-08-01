@@ -13,7 +13,7 @@ const client = siteReg.test(projectPath + "/") ? RegExp.$2 : ''
 var __path = projectPath.split(`/${site}/${client}/`)
 const dir = __path[1] || ""
 
-var tempFn = function(fn) {
+var tempFn = function (fn) {
     return fn.toString().replace(/.*?\/\*(.*?)\*\//gmi, '$1')
 }
 
@@ -31,7 +31,7 @@ exports.options = {
     '--copy <复制>': '暂时只支持复制页面'
 
 };
-exports.run = function(argv, cli, env) {
+exports.run = function (argv, cli, env) {
     'use strict'
     if ((argv.h === true) || argv.help) {
         return cli.help(exports.name, exports.options);
@@ -85,9 +85,102 @@ exports.run = function(argv, cli, env) {
         }
     }
 
-
+    function checkEmpty(val){
+        if(!val){
+            fis.log.warn("不能为空".red.bold);
+            return true;
+        }
+    }
     if (_system) {
 
+        if (isRoot) {
+            fis.log.warn("请不要在子系统下创建子系统！".red.bold);
+            return;
+        }
+
+        read({ prompt: "网站名（非中文）：", default: "pcauto", edit: true }, function (er, site) {
+            if (er) {
+                console.log('');
+                return;
+            }
+
+            if(checkEmpty(site)) return;
+
+            if (isChina(site)) {
+                fis.log.warn("网站名不能包含中文！".red.bold);
+                return;
+            }
+
+            console.log(site);
+
+            read({ prompt: "类型（非中文，如pc、wap等）：" }, function (er, client) {
+                if (er) {
+                    console.log('');
+                    return;
+                }
+
+                if(checkEmpty(client)) return;
+
+                if (isChina(client)) {
+                    fis.log.warn("类型名不能包含中文！".red.bold);
+                    return;
+                }
+
+                console.log(client);
+
+                read({ prompt: "项目名（非中文）：" }, function (er, project) {
+                    if (er) {
+                        console.log('');
+                        return;
+                    }
+                    if(checkEmpty(project)) return;
+
+                    if (isChina(project)) {
+                        fis.log.warn("项目名不能包含中文！".red.bold);
+                        return;
+                    }
+
+                    console.log(project);
+
+                    // 生成发布路径md5
+                    const dir = (Math.random()*1e16 + new Date().getTime()).toString();
+                    const base64 =  fis.util.base64(dir);
+
+                    var packContent = {
+                        "name": project,
+                        "version": "1.0.0",
+                        "site": site,
+                        "client": client,
+                        "base64":base64,
+                        "dir": '',
+                        "dependencies": {
+            
+                        }
+                    }
+            
+                    // mkdirp([])
+                    let target = path.resolve(projectPath, project)
+                    if (fs.existsSync(target)) return fis.log.warn(target, `子系统:${project} 已存在！\n`.red.bold);
+            
+                    fse.copy(path.resolve(__dirname, 'temp'), target, function (err) {
+                        if (err) return fis.log.error(err)
+                        fis.log.info("子系统:" + project + ' 创建成功！'.green.bold)
+                        console.log(path.resolve(target, 'package.json'))
+                        fse.outputJson(path.resolve(target, 'package.json'), packContent, function (err) {
+                            if (err) return fis.log.error(path.resolve(target, 'package.json').red.bold)
+                        })
+                    })
+
+
+
+                })
+
+            })
+
+        })
+
+
+        return;
 
         if (check(_system)) return;
 
@@ -122,12 +215,12 @@ exports.run = function(argv, cli, env) {
         let target = path.resolve(projectPath, _system)
         if (fs.existsSync(target)) return fis.log.warn(target, `子系统:${_system} 已存在！\n`.red.bold);
 
-        fse.copy(path.resolve(__dirname, 'temp'), target, function(err) {
+        fse.copy(path.resolve(__dirname, 'temp'), target, function (err) {
             if (err) return fis.log.error(err)
             fis.log.info("子系统:" + _system + ' 创建成功！'.green.bold)
             packContent.name = _system
             console.log(path.resolve(target, 'package.json'))
-            fse.outputJson(path.resolve(target, 'package.json'), packContent, function(err) {
+            fse.outputJson(path.resolve(target, 'package.json'), packContent, function (err) {
                 if (err) return fis.log.error(path.resolve(target, 'package.json').red.bold)
             })
         })
@@ -149,7 +242,7 @@ exports.run = function(argv, cli, env) {
         if (_module) {
 
 
-            read({ prompt: "模块类型(js or css or ui): " }, function(er, type) {
+            read({ prompt: "模块类型(js or css or ui): " }, function (er, type) {
 
                 if (er) {
                     console.log('');
@@ -162,7 +255,7 @@ exports.run = function(argv, cli, env) {
                 if (type == "js" || type == "css" || type == "ui") {
 
 
-                    read({ prompt: "模块名（非中文）: " }, function(er, moduleName) {
+                    read({ prompt: "模块名（非中文）: " }, function (er, moduleName) {
                         if (er) {
                             console.log('');
                             return;
@@ -181,7 +274,7 @@ exports.run = function(argv, cli, env) {
                             moduleName = type.substr(0, 1) + "-" + moduleName;
 
 
-                            read({ prompt: "描述关键字: " }, function(er, des) {
+                            read({ prompt: "描述关键字: " }, function (er, des) {
                                 if (er) {
                                     console.log('');
                                     return;
@@ -189,7 +282,7 @@ exports.run = function(argv, cli, env) {
                                 if (!des) {
                                     console.error("请输入描述关键字");
                                 } else {
-                                    read({ prompt: "开发者: " }, function(er, author) {
+                                    read({ prompt: "开发者: " }, function (er, author) {
                                         if (er) {
                                             console.log('');
                                             return;
@@ -216,7 +309,7 @@ exports.run = function(argv, cli, env) {
                                             var oFiles = {
                                                 package: {
                                                     name: "package.json",
-                                                    content: JSON.stringify(packageContent, function(key, value) {
+                                                    content: JSON.stringify(packageContent, function (key, value) {
                                                         return value
                                                     }, 10)
                                                 }
@@ -250,7 +343,7 @@ exports.run = function(argv, cli, env) {
                                             }
 
 
-                                            Object.keys(oFiles).forEach(function(file) {
+                                            Object.keys(oFiles).forEach(function (file) {
                                                 var name = oFiles[file].name;
                                                 console.log(name)
                                                 fse.outputFile(path.resolve(wDir, name), oFiles[file].content)
@@ -281,7 +374,7 @@ exports.run = function(argv, cli, env) {
         // 创建组件
         else if (_widget) {
 
-            read({ prompt: "组件名（非中文）: " }, function(er, widgetName) {
+            read({ prompt: "组件名（非中文）: " }, function (er, widgetName) {
                 if (er) {
                     console.log('');
                     return;
@@ -297,7 +390,7 @@ exports.run = function(argv, cli, env) {
                         return;
                     }
 
-                    read({ prompt: "版本号: ", default: "1.0.0" }, function(er, version) {
+                    read({ prompt: "版本号: ", default: "1.0.0" }, function (er, version) {
                         if (er) {
                             console.log('');
                             return;
@@ -305,7 +398,7 @@ exports.run = function(argv, cli, env) {
                         if (!version) {
                             console.error("请输入版本号！")
                         } else {
-                            read({ prompt: "描述关键字: " }, function(er, des) {
+                            read({ prompt: "描述关键字: " }, function (er, des) {
                                 if (er) {
                                     console.log('');
                                     return;
@@ -313,7 +406,7 @@ exports.run = function(argv, cli, env) {
                                 if (!des) {
                                     console.error("请输入描述关键字！")
                                 } else {
-                                    read({ prompt: "开发者: " }, function(er, author) {
+                                    read({ prompt: "开发者: " }, function (er, author) {
                                         if (er) {
                                             console.log('');
                                             return;
@@ -338,7 +431,7 @@ exports.run = function(argv, cli, env) {
                                             var oFiles = {
                                                 package: {
                                                     name: "package.json",
-                                                    content: JSON.stringify(packageContent, function(key, value) {
+                                                    content: JSON.stringify(packageContent, function (key, value) {
                                                         return value
                                                     }, 10)
                                                 },
@@ -355,7 +448,7 @@ exports.run = function(argv, cli, env) {
                                                     content: ""
                                                 }
                                             };
-                                            Object.keys(oFiles).forEach(function(file) {
+                                            Object.keys(oFiles).forEach(function (file) {
                                                 var name = oFiles[file].name;
                                                 console.log(name)
                                                 fse.outputFile(path.resolve(wDir, name), oFiles[file].content)
@@ -438,9 +531,9 @@ exports.run = function(argv, cli, env) {
 
 
 
-            Object.keys(tplFiles).forEach(function(name) {
+            Object.keys(tplFiles).forEach(function (name) {
 
-                let to = `./page/${page}/${page+"."+name}`;
+                let to = `./page/${page}/${page + "." + name}`;
                 let read = `${tplFiles[name]}`;
 
 
@@ -448,9 +541,9 @@ exports.run = function(argv, cli, env) {
 
                 let targetFile = path.resolve(targetPath, read);
 
-                if(!fs.existsSync(targetFile)) return;
+                if (!fs.existsSync(targetFile)) return;
 
-                fse.readFile(targetFile, function(err, data) {
+                fse.readFile(targetFile, function (err, data) {
                     if (err) {
                         return fis.log.info(err);
                     }
